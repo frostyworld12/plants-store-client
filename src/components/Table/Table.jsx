@@ -1,50 +1,25 @@
 import ButtonIcon from "../ButtonIcon/ButtonIcon";
 
-const Table = ({ data = [], columns = [], actionsColumns = [], columnsToExclude = [], columnsToMark = [] }) => {
+const Table = ({ data = [], columns = [], actionsColumns = [], columnsToExclude = [], columnsToMark = [], idColumn = '', imageColumn = '' }) => {
   return (
     <div className="flex flex-col h-[calc(100vh-15rem)]">
-      <div className="flex-grow overflow-y-auto">
-        <table className="relative w-full">
-          <thead>
-            <tr className="text-xs">
-              {
-                columns.map((column, i) => {
-                  return !columnsToExclude.includes(column)
-                    ? <th
-                      key={i}
-                      className={
-                        "uppercase text-left sticky top-0 py-3 px-2 bg-zinc-50 text-zinc-700 first:rounded-l-lg " +
-                        (actionsColumns.length === 0 ? "last:rounded-r-lg" : "")
-                      }>
-                      {column}
-                    </th>
-                    : null;
-                })
-              }
-              {
-                actionsColumns.map((column, i) => {
-                  return <th
-                    key={i}
-                    className={
-                      "sticky top-0 py-3 px-2 bg-zinc-50 text-zinc-700 last:rounded-r-lg "
-                    }>
-                  </th>
-                })
-              }
-            </tr>
-          </thead>
-          <tbody className="">
+      <div className="overflow-y-auto">
+        <table className="border-separate border-spacing-y-4 w-full">
+          <tbody>
             {
               data.map((item, i) => {
-                return <tr key={i}>
+                return <tr className="" key={i}>
                   {
                     columns.map((column, i) => {
                       return !columnsToExclude.includes(column)
                         ? <td
                           key={i}
-                          className={"break-all font-medium border-0 text-zinc-500 " + (columnsToMark.includes(column) ? "text-zinc-800" : "")}
+                          className={`px-2 py-4 break-all font-medium text-zinc-500 bg-zinc-50 first:rounded-l-lg first:border-l border-t border-b border-zinc-100
+                            ${(columnsToMark.includes(column) ? " text-zinc-800 " : "")}
+                            ${(!actionsColumns.length ? " last:rounded-r-lg last:border-r " : "")}`
+                          }
                         >
-                          <div className="bg-zinc-300">
+                          <div className="">
                             {item[column]}
                           </div>
                         </td>
@@ -55,9 +30,11 @@ const Table = ({ data = [], columns = [], actionsColumns = [], columnsToExclude 
                     actionsColumns.map((column, i) => {
                       return <td
                         key={i}
-                        className="break-all font-medium px-2 py-3 text-zinc-500"
+                        className="px-2 bg-zinc-50 first:rounded-l-lg first:border-l last:rounded-r-lg last:border-r border-t border-b border-zinc-100"
                       >
-                        <ButtonIcon type={column.type} title={column.title} iconName={column.iconName} onClick={() => column.action(item.userId)} />
+                        <div className="">
+                          <ButtonIcon type={column.type} title={column.title} iconName={column.iconName} onClick={() => column.action(item[idColumn])} />
+                        </div>
                       </td>
                     })
                   }

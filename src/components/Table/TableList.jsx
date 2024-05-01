@@ -1,14 +1,18 @@
 import ButtonIcon from "../ButtonIcon/ButtonIcon";
+import Image from "../Image/Image";
 
-const TableList = ({ data = [], columns = [], actionsColumns = [], columnsToExclude = [], columnsToMark = [], idColumn = '' }) => {
+const TableList = ({ data = [], columns = [], actionsColumns = [], columnsToExclude = [], columnsToMark = [], idColumn = '', imageColumn = '' }) => {
   const gridStyle = {
-    gridTemplateColumns: `repeat(${(columns.length - columnsToExclude.length)}, minmax(0, 1fr)) repeat(${actionsColumns.length}, 70px)`
+    gridTemplateColumns: `${imageColumn ? 'repeat(1, 70px)' : ''} repeat(${(columns.length - columnsToExclude.length)}, minmax(0, 1fr)) repeat(${actionsColumns.length}, 70px)`
   }
   return (
     <div className="h-[calc(100vh-10rem)] w-full">
       { data.length > 0
         ? data.map((item, i) => {
           return <div key={i} className="grid bg-zinc-50 mb-5 rounded-lg items-center" style={gridStyle}>
+            {
+              imageColumn && <Image image={item[imageColumn]}/>
+            }
             {
               columns.map((column, i) => {
                 return !columnsToExclude.includes(column)

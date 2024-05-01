@@ -5,12 +5,12 @@ const typePerClass = {
   outline: 'text-zinc-600 border-[1px] border-zinc-200 rounded-lg px-5 hover:border-zinc-300 hover:text-zinc-800'
 };
 
-const Button = ({ type = '', title = '', buttonType = '', form = '', onClick = () => {} }) => {
+const Button = ({ type = '', title = '', buttonType = '', form = '', onClick = () => {}, className }) => {
   return (
     <button
       type={buttonType}
       form={form}
-      className={"p-1 transition-all duration-300 " + typePerClass[type]}
+      className={ "p-1 transition-all duration-300 " + typePerClass[type] + " " + className }
       onClick={(e) => onClick(e)}
     >
       { title }

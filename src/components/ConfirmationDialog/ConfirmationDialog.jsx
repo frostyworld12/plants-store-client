@@ -1,13 +1,13 @@
 import ButtonIcon from "../ButtonIcon/ButtonIcon";
 import Button from "../Button/Button";
 
-const ConfirmationDialog = ({ isOpen, width = 30, children, onCloseClick, onConfirmClick}) => {
+const ConfirmationDialog = ({ isOpen = false, width = 30, children, onClose = () => {}, onConfirm = () => {} }) => {
   return (
     <div className={isOpen ? "" : "hidden"}>
       <div className="flex items-center justify-center absolute inset-0">
         <div className="bg-zinc-100 rounded-lg flex flex-col z-50" style={{ width: `${width}rem` }}>
           <div className="flex px-3 py-3 justify-end">
-            <ButtonIcon iconName="XMarkIcon" type="bare" onClick={(e) => onCloseClick(e)}/>
+            <ButtonIcon iconName="XMarkIcon" type="bare" onClick={(e) => onClose(e)}/>
           </div>
 
           <div className="flex-1 px-6 py-6 flex items-center justify-center">
@@ -18,12 +18,12 @@ const ConfirmationDialog = ({ isOpen, width = 30, children, onCloseClick, onConf
             <Button
               title='Ok'
               type='filled'
-              onClick={() => onConfirmClick(true)}
+              onClick={() => onConfirm(true)}
             />
             <Button
               title='Cancel'
               type='outline'
-              onClick={() => onConfirmClick(false)}
+              onClick={() => onConfirm(false)}
             />
           </div>
         </div>

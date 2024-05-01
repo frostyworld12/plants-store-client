@@ -4,12 +4,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import MenuItem from "./MenuItem/MenuItem";
 
 const menuItems = [
-  { name: 'Purchases', iconName: 'CreditCardIcon'        , isSelected: false, link: '' },
-  { name: 'Products' , iconName: 'CubeIcon'              , isSelected: false, link: '' },
-  { name: 'Customers', iconName: 'BriefcaseIcon'         , isSelected: false, link: '' },
-  { name: 'Supliers' , iconName: 'BuildingStorefrontIcon', isSelected: false, link: '' },
-  { name: 'Inventory', iconName: 'ArchiveBoxIcon'        , isSelected: false, link: '' },
-  { name: 'Employees', iconName: 'UsersIcon'             , isSelected: false, link: '/employees' },
+  { name: 'Purchases', iconName: 'CreditCardIcon'         , isSelected: false, link: '' },
+  { name: 'Products' , iconName: 'CubeIcon'               , isSelected: false, link: '' },
+  { name: 'Customers', iconName: 'BriefcaseIcon'          , isSelected: false, link: '/customers' },
+  { name: 'Supliers' , iconName: 'BuildingStorefrontIcon' , isSelected: false, link: '/suppliers' },
+  { name: 'Suplies'  , iconName: 'ArchiveBoxArrowDownIcon', isSelected: false, link: '/supplies'  },
+  { name: 'Inventory', iconName: 'ArchiveBoxIcon'         , isSelected: false, link: '' },
+  { name: 'Employees', iconName: 'UsersIcon'              , isSelected: false, link: '/employees' },
 ];
 
 const MenuColumn = () => {

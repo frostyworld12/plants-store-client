@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const PageHeader = ({ children }) => {
   return (
-    <div className="py-1 px-2 mb-5 flex gap-4 justify-end">
+    <div className="py-1 mb-5 flex gap-4 justify-end items-center">
       { children }
     </div>
   );

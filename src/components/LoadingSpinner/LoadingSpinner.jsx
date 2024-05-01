@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-
 const LoadingSpinner = ({ color }) => {
   return (
     <div role="status">
@@ -11,9 +9,5 @@ const LoadingSpinner = ({ color }) => {
     </div>
   );
 }
-
-LoadingSpinner.propTypes = {
-  color: PropTypes.string,
-};
 
 export default LoadingSpinner;
