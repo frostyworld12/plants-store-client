@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
 import * as suppliersService from "../services/suppliersService";
+import * as userService from "../services/userService";
+import { useEffect, useState } from "react";
 import toast from 'react-hot-toast';
 
-export const useSuppliers = (query, isNeedUpdate) => {
+export const useSuppliers = (query, onSelect) => {
   const [isLoading, setIsLoading] = useState(false);
   const [suppliers, setSuppliers] = useState([]);
-  const [currentSupplier, setCurrentSupplier] = useState(null);
 
   const pageSize = 12;
   const [offset, setOffset] = useState(0);
@@ -15,32 +15,36 @@ export const useSuppliers = (query, isNeedUpdate) => {
     setIsLoading(true);
     const result = await retrieveSuppliers(pageSize, offset, query);
     setIsLoading(false);
-    setSuppliers(result.suppliers);
-    setTotalCount(result.count);
+
+    setSuppliers(result?.suppliers || []);
+    setTotalCount(result?.count || 0);
+  };
+
+  const handleSelectSupplier = (supplierId) => {
+    const data = suppliers.find(supplier => supplier.id === supplierId) || {};
+    onSelect(data);
+  };
+
+  const getSuppliersFormattedData = () => {
+    return suppliers.map(item => ({id: item.id, image: item.image, title: item.name, description: item.contactPerson}));
   };
 
   useEffect(() => {
-    console.log('retrieve')
-    if (isNeedUpdate) {
-      console.log('retrieve is update')
-
-      processSuppliers();
-    }
-  }, [offset, query, isNeedUpdate]);
+    processSuppliers();
+  }, [offset, query]);
 
   return {
     isLoading,
-    suppliers,
-    currentSupplier,
-    setCurrentSupplier,
-    processSuppliers,
     pageSize,
     setOffset,
-    totalCount
+    totalCount,
+    processSuppliers,
+    getSuppliersFormattedData,
+    handleSelectSupplier
   }
 };
 
-export const useSuppliersProcess = (data) => {
+export const useSuppliersProcess = (data = {}) => {
   const [supplierData, setSupplierData] = useState({});
   const [action, setAction] = useState('');
 
@@ -49,25 +53,29 @@ export const useSuppliersProcess = (data) => {
   };
 
   const handleSaveSupplier = async () => {
-    await saveSupplier(supplierData);
-  };
-
-  const handleRemoveSupplier = async () => {
-    await removeSupplier(supplierData);
+    const data = {
+      name: supplierData.name,
+      contactPerson: supplierData.contactPerson,
+      email: supplierData.email,
+      phone: supplierData.phone,
+      user: {
+        username: supplierData.username,
+        password: supplierData.password
+      }
+    };
+    await saveSupplier(data);
   };
 
   useEffect(() => {
-    console.log(data);
     setSupplierData(data?.supplier || {});
     setAction(data?.action || '');
-  }, [data]);
+  }, []);
 
   return {
     action,
     supplierData,
     handleSupplierDataChange,
-    handleSaveSupplier,
-    handleRemoveSupplier
+    handleSaveSupplier
   };
 };
 
@@ -82,18 +90,10 @@ const retrieveSuppliers = async(limit, offset, query) => {
 const saveSupplier = async(data) => {
   try {
     await suppliersService.saveSupplier(data);
+    userService.saveUserData({...data, userType: 'supplier'});
     toast.success('Supplier successfully saved.');
   } catch (error) {
     toast.error(error.message || 'Unknown error');
   }
-}
-
-const removeSupplier = async(data) => {
-  try {
-    await suppliersService.deleteSupplier(data?.id);
-    toast.success('Supplier successfully removed.');
-  } catch (error) {
-    toast.error(error.message || 'Unknown error');
-  }
-}
+};
 

@@ -1,8 +1,6 @@
-import PropTypes from "prop-types";
-
 const typePerClass = {
-  filled: 'bg-zinc-600 text-zinc-50 rounded-lg px-7 py-[0.4rem] hover:bg-zinc-700',
-  outline: 'text-zinc-600 border-[1px] border-zinc-200 rounded-lg px-5 hover:border-zinc-300 hover:text-zinc-800'
+  filled: 'bg-zinc-800 text-zinc-50 rounded-lg hover:bg-zinc-700',
+  outline: 'text-zinc-500 border-2 border-zinc-100 rounded-lg hover:border-zinc-200 hover:text-zinc-600'
 };
 
 const Button = ({ type = '', title = '', buttonType = '', form = '', onClick = () => {}, className }) => {
@@ -10,21 +8,12 @@ const Button = ({ type = '', title = '', buttonType = '', form = '', onClick = (
     <button
       type={buttonType}
       form={form}
-      className={ "p-1 transition-all duration-300 " + typePerClass[type] + " " + className }
+      className={ "px-3 py-1.5 transition-all duration-300 font-semibold " + typePerClass[type] + " " + className }
       onClick={(e) => onClick(e)}
     >
       { title }
     </button>
   );
 }
-
-
-Button.propTypes = {
-  type: PropTypes.string,
-  title: PropTypes.string,
-  buttonType: PropTypes.string,
-  form: PropTypes.string,
-  onClick: PropTypes.func
-};
 
 export default Button;

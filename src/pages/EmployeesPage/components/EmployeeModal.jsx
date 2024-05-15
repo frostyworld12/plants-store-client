@@ -3,7 +3,7 @@ import Input from "../../../components/Input/Input";
 import { useEmployeesProcess } from "../../../hooks/useEmployees";
 import FileInput from "../../../components/FileInput/FileInput";
 
-const EmployeeModal = ({ data = {}, state = false, onClose = () => { } }) => {
+const EmployeeModal = ({ data = {}, state = false, onClose = () => { }, isEmployeeMode = false, title = 'Employee' }) => {
   const {
     action,
     employeeData,
@@ -34,7 +34,7 @@ const EmployeeModal = ({ data = {}, state = false, onClose = () => { } }) => {
 
   return (
     <>
-      <Modal title="Employee" visible={state} onClose={handleClose} buttons={modalButtons}>
+      <Modal title={title} visible={state} onClose={handleClose} buttons={modalButtons}>
         <form id="upsertEmployee" onSubmit={handleSaveRecord}>
           {
             action !== 'remove'
@@ -59,31 +59,35 @@ const EmployeeModal = ({ data = {}, state = false, onClose = () => { } }) => {
                   </div>
                 </div>
 
-                <Input
-                  label="Position"
-                  placeholder="Seller"
-                  value={employeeData.position}
-                  onChange={(e) => handleEmployeeDataChange(e.target?.value, 'position')}
-                  isRequired={true}
-                ></Input>
+                {
+                  !isEmployeeMode && <>
+                    <Input
+                      label="Position"
+                      placeholder="Seller"
+                      value={employeeData.position}
+                      onChange={(e) => handleEmployeeDataChange(e.target?.value, 'position')}
+                      isRequired={true}
+                    ></Input>
 
-                <Input
-                  label="Email"
-                  placeholder="helpfulelinor@gmail.com"
-                  type="email"
-                  value={employeeData.username}
-                  onChange={(e) => handleEmployeeDataChange(e.target?.value, 'username')}
-                  isRequired={true}
-                ></Input>
+                    <Input
+                      label="Email"
+                      placeholder="helpfulelinor@gmail.com"
+                      type="email"
+                      value={employeeData.username}
+                      onChange={(e) => handleEmployeeDataChange(e.target?.value, 'username')}
+                      isRequired={true}
+                    ></Input>
 
-                <Input
-                  label="Password"
-                  placeholder="Password"
-                  type="password"
-                  value={employeeData.password}
-                  onChange={(e) => handleEmployeeDataChange(e.target?.value, 'password')}
-                  isRequired={action === 'new'}
-                ></Input>
+                    <Input
+                      label="Password"
+                      placeholder="Password"
+                      type="password"
+                      value={employeeData.password}
+                      onChange={(e) => handleEmployeeDataChange(e.target?.value, 'password')}
+                      isRequired={action === 'new'}
+                    ></Input>
+                  </>
+                }
               </div>
               : <div>Are you sure you want to remove employee?</div>
           }

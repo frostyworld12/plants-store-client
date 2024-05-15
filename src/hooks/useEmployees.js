@@ -7,7 +7,7 @@ export const useEmployees = (query, isNeedUpdate) => {
   const [employees, setEmployees] = useState([]);
   const [currentEmployee, setCurrentEmployee] = useState(null);
 
-  const pageSize = 12;
+  const pageSize = 8;
   const [offset, setOffset] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -20,6 +20,7 @@ export const useEmployees = (query, isNeedUpdate) => {
   };
 
   useEffect(() => {
+    console.log('useEffect', isNeedUpdate);
     if (isNeedUpdate) {
       processEmployees();
     }
@@ -37,7 +38,7 @@ export const useEmployees = (query, isNeedUpdate) => {
   }
 };
 
-export const useEmployeesProcess = (data) => {
+export const useEmployeesProcess = (data = {}) => {
   const [employeeData, setEmployeeData] = useState({});
   const [action, setAction] = useState('');
 
@@ -54,7 +55,6 @@ export const useEmployeesProcess = (data) => {
   };
 
   useEffect(() => {
-    console.log(data);
     setEmployeeData(data?.employee || {});
     setAction(data?.action || '');
   }, [data]);

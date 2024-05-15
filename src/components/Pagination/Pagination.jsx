@@ -9,6 +9,8 @@ const Pagination = ({ totalCount = 0, pageSize = 0, onPageClick = () => {} }) =>
 
   const handlePageClick = (pageNumber) => {
     setCurrentPage(pageNumber);
+
+    processRanges(pageNumber);
     onPageClick(pageNumber - 1);
   };
 
@@ -19,30 +21,39 @@ const Pagination = ({ totalCount = 0, pageSize = 0, onPageClick = () => {} }) =>
     ) {
       pageNumber = currentPage;
     }
-
-    if (!isPrev && pageNumber > ranges[currentRange][ranges[currentRange].length - 1]) {
-      setCurrentRange(currentRange + 1);
-    } else if (isPrev && pageNumber < ranges[currentRange][0]) {
-      setCurrentRange(currentRange - 1);
-    }
-
+    processRanges(pageNumber);
     setCurrentPage(pageNumber);
     onPageClick(pageNumber - 1);
+  };
+
+  const processRanges = (pageNumber) => {
+    if (pageNumber >= ranges[currentRange][ranges[currentRange].length - 1] &&
+      Object.keys(ranges).length > currentRange
+    ) {
+      setCurrentRange(currentRange + 1);
+    } else if (
+      pageNumber <= ranges[currentRange][0] &&
+      currentRange > 1
+    ) {
+      setCurrentRange(currentRange - 1);
+    }
   }
 
   useEffect(() => {
     const totalPages = Math.ceil(totalCount / pageSize);
-    setTotalPages(totalPages);
     const pagesArray = Array(totalPages).fill(0).map((page, index) => page = index + 1);
     const pageRanges = {};
-    let fisrtPage = 0;
-    let lastPage = 5;
-    for (let i = 0; i < Math.ceil(pagesArray.length / 5); i++) {
-      pageRanges[i + 1] = pagesArray.slice(fisrtPage, lastPage);
-      fisrtPage = lastPage;
-      lastPage = fisrtPage + lastPage;
+    const pagesAmount = 5;
+    let firstPage = 0;
+    let lastPage = pagesAmount;
+
+    for (let i = 0; i < Math.ceil(pagesArray.length / pagesAmount); i++) {
+      pageRanges[i + 1] = pagesArray.slice(firstPage, lastPage);
+      firstPage = lastPage - 1;
+      lastPage = firstPage + lastPage;
     }
 
+    setTotalPages(totalPages);
     setRanges(pageRanges);
     setCurrentRange(1);
     setCurrentPage(1);
@@ -55,7 +66,7 @@ const Pagination = ({ totalCount = 0, pageSize = 0, onPageClick = () => {} }) =>
           <Icon iconName="ChevronLeftIcon" iconClassName="text-zinc-500 w-6" type="solid" />
         </li>
         {
-          ranges[currentRange] && ranges[currentRange].map((page, i) => {
+          Object.keys(ranges).length > 0 && ranges[currentRange].map((page, i) => {
             return <li
               key={i}
               className={"select-none	p-2 w-10 text-center text-zinc-800 hover:bg-zinc-50 transition-all duration-300 " + (currentPage === page ? "bg-zinc-50" : "")}

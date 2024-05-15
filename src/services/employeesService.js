@@ -40,3 +40,16 @@ export const deleteEmployee = async (userId) => {
     throw new Error(error?.response?.data || 'Unknown error');
   }
 };
+
+export const getEmployee = async (employeeId) => {
+  try {
+    const result = await axios.get(constants.getEmployee, {
+      params: {
+        employeeId: employeeId
+      }
+    });
+    return result.data;
+  } catch (error) {
+    throw new Error(error?.response?.data || 'Unknown error');
+  }
+}

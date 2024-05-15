@@ -1,4 +1,4 @@
-const DropDown = ({ items = [], position = 'right', data = {}, onBlankClick = () => {} }) => {
+const DropDown = ({ items = [], position = 'right', data = {}, onBlankClick = () => { } }) => {
   const dropDownPosition = {
     left: '',
     right: 'right-0'
