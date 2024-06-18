@@ -9,13 +9,15 @@ const Input = ({
   placeholder = '',
   isRequired = false,
   isReadOnly = false,
+  step = 'any',
+  min = 0,
   onChange = () => { },
   onKeyUp = () => { },
   onClick = () => { }
 }) => {
   const classPerType = {
     bordered: "border border-zinc-200 text-zinc-800 focus:ring-zinc-500 focus:border-zinc-300",
-    bare: "text-zinc-900 hover:bg-zinc-100"
+    bare: "text-zinc-900 hover:bg-zinc-100 bg-zinc-50"
   }
   return (
     <div>
@@ -33,6 +35,8 @@ const Input = ({
           type={type}
           className={(iconName ? "ps-10" : "") + " font-medium transition-all duration-300 text-sm rounded-lg block w-full px-3 py-2 " + classPerType[classType]}
           placeholder={placeholder}
+          min={min}
+          step={step}
           required={isRequired}
           readOnly={isReadOnly}
           value={value}

@@ -1,32 +1,33 @@
-import { useState } from "react";
-import { Toaster } from "react-hot-toast";
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
-import PageContainer from "../../components/PageContainer/PageContainer";
-import PageHeader from "../../components/PageHeader/PageHeader";
-import ButtonIcon from "../../components/ButtonIcon/ButtonIcon";
-import ProductsTable from "./components/ProductsTable";
-import ProductModal from "./components/ProductModal";
-import Input from "../../components/Input/Input";
+import PageContainer from '../../components/PageContainer/PageContainer';
+import PageHeader from '../../components/PageHeader/PageHeader';
+import ButtonIcon from '../../components/ButtonIcon/ButtonIcon';
+import ProductsTable from './components/ProductsTable';
+import ProductModal from './components/ProductModal';
+import Input from '../../components/Input/Input';
 
 const ProductsPage = () => {
-  const [isProcessingProduct, setIsProcessingProduct] = useState(false);
-  const [isNeedUpdate, setIsNeedUpdate] = useState(true);
-  const [currentData, setCurrentData] = useState({});
   const [query, setQuery] = useState('');
+  const [currentData, setCurrentData] = useState({});
+  const [isNeedUpdate, setIsNeedUpdate] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const handleRecord = (product, action) => {
-    const data = {
+  const handleProcessRecord = (product, action) => {
+    setIsNeedUpdate(false);
+    setCurrentData({
       product: product,
       action: action
-    }
-    setCurrentData(data);
-    setIsNeedUpdate(false);
-    setIsProcessingProduct(true);
+    });
+    setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsProcessingProduct(false);
-    setIsNeedUpdate(true);
+  const handleCloseModal = (isNeedUpdate) => {
+    navigate('/home/products');
+    setIsNeedUpdate(isNeedUpdate);
+    setIsModalOpen(false);
   };
 
   const handleQuery = (e) => {
@@ -36,22 +37,21 @@ const ProductsPage = () => {
   return (
     <PageContainer>
       <PageHeader>
-        <div className="w-2/5">
-          <Input iconName="MagnifyingGlassIcon" classType="bare" value={query} onChange={handleQuery}></Input>
+        <div className='w-2/5'>
+          <Input iconName='MagnifyingGlassIcon' classType='bare' value={query} onChange={handleQuery}></Input>
         </div>
-        <ButtonIcon type="outline" iconName="PlusIcon" title="Create Product" onClick={() => handleRecord({}, 'new')}/>
+        <ButtonIcon type='outline' iconName='PlusIcon' title='Create Product' onClick={() => handleProcessRecord({}, 'new')} />
       </PageHeader>
 
       <ProductsTable
         searchQuery={query}
         isNeedUpdate={isNeedUpdate}
-        onRecordEdit={(data) => handleRecord(data, 'edit')}
-        onRecordRemove={(data) => handleRecord(data, 'remove')}
+        onSelect={(data) => handleProcessRecord(data, 'view')}
       />
 
-      <ProductModal state={isProcessingProduct} onClose={handleCloseModal} data={currentData} />
-
-      <Toaster />
+      {
+        isModalOpen && <ProductModal onClose={handleCloseModal} data={currentData} />
+      }
     </PageContainer>
   )
 };

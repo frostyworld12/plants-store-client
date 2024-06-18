@@ -1,8 +1,7 @@
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
-import { Toaster } from "react-hot-toast";
 import { useLogin } from "../../hooks/useLogin";
-import { useUser } from "../../hooks/useUsers";
+import { useLoginUser } from "../../hooks/useUsers";
 
 const LoginPage = () => {
   const {
@@ -15,12 +14,12 @@ const LoginPage = () => {
   const {
     userData,
     handleUserDataChange,
-    handleGetUser
-  } = useUser(currentState);
+    handleLoginUser
+  } = useLoginUser(currentState);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await handleGetUser();
+    await handleLoginUser();
   }
 
   return <div className="h-screen box-border flex items-center justify-center">
@@ -75,7 +74,6 @@ const LoginPage = () => {
           />
         </div>
       </form>
-      <Toaster />
     </div>
   </div>
 };

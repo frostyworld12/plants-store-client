@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Button from "../Button/Button";
 import Icon from "../Icon/Icon";
 
-const FileInput = ({ label = '', onChange = () => {}, value = '', isRequired = false }) => {
+const FileInput = ({ label = '', onChange = () => { }, value = '', isRequired = false, isReadOnly = false }) => {
   const fileInput = useRef(null);
   const [currentValue, setCurrentValue] = useState('');
 
@@ -36,17 +36,19 @@ const FileInput = ({ label = '', onChange = () => {}, value = '', isRequired = f
         <div className="overflow-hidden shadow-lg rounded-full h-[80px] w-[80px] flex justify-center items-center">
           {
             currentValue
-              ? <img className="object-cover h-[80px] w-[80px]" src={currentValue}/>
+              ? <img className="object-cover h-[80px] w-[80px]" src={currentValue} />
               : <Icon iconName="CameraIcon" iconClassName="w-12 text-zinc-300" type="solid" />
           }
         </div>
-        <div>
-          <Button
-            title="Choose file"
-            type="outline"
-            onClick={handleUploadClick}
-          ></Button>
-        </div>
+        {
+          !isReadOnly && <div>
+            <Button
+              title="Choose file"
+              type="outline"
+              onClick={handleUploadClick}
+            ></Button>
+          </div>
+        }
       </div>
       <input
         className="hidden"

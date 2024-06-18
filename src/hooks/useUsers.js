@@ -1,11 +1,9 @@
 import * as userService from "../services/userService";
-import * as suppliersService from "../services/suppliersService";
-import * as employeesService from "../services/employeesService";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 
-export const useSupplierUser = () => {
+export const useRegisterSupplierUser = () => {
   const [supplierData, setSupplierData] = useState({});
   const navigate = useNavigate();
 
@@ -14,18 +12,8 @@ export const useSupplierUser = () => {
   };
 
   const handleSaveSupplier = async () => {
-    const data = {
-      name: supplierData.name,
-      contactPerson: supplierData.contactPerson,
-      email: supplierData.email,
-      phone: supplierData.phone,
-      user: {
-        username: supplierData.username,
-        password: supplierData.password
-      }
-    };
     try {
-      await userService.createSupplierUser(data);
+      await userService.createSupplierUser(supplierData);
       navigate('/home');
     } catch (error) {
       toast.error(error.message || 'Unknown error');
@@ -39,7 +27,7 @@ export const useSupplierUser = () => {
   }
 };
 
-export const useUser = (userType) => {
+export const useLoginUser = () => {
   const [userData, setUserData] = useState();
   const navigate = useNavigate();
 
@@ -47,15 +35,9 @@ export const useUser = (userType) => {
     setUserData(data => ({...data, [field]: value}));
   };
 
-  const handleGetUser = async() => {
-    const data = {
-      username: userData.username,
-      password: userData.password,
-      userType: userType
-    };
-
+  const handleLoginUser = async() => {
     try {
-      await userService.getUser(data);
+      await userService.getUser(userData);
       navigate('/home');
     } catch (error) {
       toast.error(error.message || 'Unknown error');
@@ -65,38 +47,28 @@ export const useUser = (userType) => {
   return {
     userData,
     handleUserDataChange,
-    handleGetUser
+    handleLoginUser
   }
 };
 
 export const useCurrentUser = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState({});
-  const [userDataModal, setUserDataModal] = useState({});
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
 
   const getUserData = async (currentUser) => {
+    setIsLoading(true);
     try {
-      let result = {};
-      if (currentUser?.user?.role === 'Supplier') {
-        result = await suppliersService.getSupplier(currentUser?.id);
-        result.role = 'Supplier';
-      } else if (currentUser?.user?.role === 'Employee') {
-        result = await employeesService.getEmployee(currentUser?.id);
-        result.role = 'Employee';
-        setUserDataModal({
-          employee: {
-            id: userData.id,
-            image: userData.image,
-            firstName: userData.firstName,
-            lastName: userData.lastName
-          },
-          action: 'edit'
-        });
-      }
-      setUserData(result);
+      const result = await userService.getUserById(currentUser?.user?.id) || {};
+      const userData = {
+        ...(result.supplier || result.employee),
+        user: result.user
+      };
+      setUserData(userData);
     } catch (error) {
       console.log(error.message);
     }
+    setIsLoading(false);
   };
 
   const handleUserModal = (state) => {
@@ -110,8 +82,7 @@ export const useCurrentUser = () => {
 
   return {
     userData,
-    userDataModal,
-    isUserModalOpen,
+    isLoading,
     handleUserModal
   };
 };

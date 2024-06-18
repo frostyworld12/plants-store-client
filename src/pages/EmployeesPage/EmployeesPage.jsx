@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Toaster } from "react-hot-toast";
 
 import PageContainer from "../../components/PageContainer/PageContainer";
 import PageHeader from "../../components/PageHeader/PageHeader";
@@ -51,7 +50,6 @@ const EmployeesPage = () => {
 
       <EmployeeModal state={isProcessingEmployee} onClose={handleCloseModal} data={currentData} />
 
-      <Toaster />
     </PageContainer>
   )
 };

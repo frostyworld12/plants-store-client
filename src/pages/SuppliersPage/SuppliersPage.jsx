@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import PageContainer from "../../components/PageContainer/PageContainer";
 import PageHeader from "../../components/PageHeader/PageHeader";
@@ -11,6 +11,7 @@ const SuppliersPage = () => {
   const [query, setQuery] = useState('');
   const [currentData, setCurrentData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleRecord = (supplier) => {
     setCurrentData({
@@ -21,6 +22,7 @@ const SuppliersPage = () => {
   };
 
   const handleCloseModal = () => {
+    navigate('/home/suppliers');
     setIsModalOpen(false);
   };
 
@@ -41,9 +43,9 @@ const SuppliersPage = () => {
         onSelect={(data) => handleRecord(data)}
       />
 
-      <SupplierModal state={isModalOpen} onClose={handleCloseModal} data={currentData} />
-
-      <Toaster />
+      {
+        isModalOpen && <SupplierModal onClose={handleCloseModal} data={currentData} />
+      }
     </PageContainer>
   )
 };

@@ -1,19 +1,19 @@
-import { useState, useContext } from "react";
+import { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from '../../utility/contexts';
 
 import PageContainer from "../../components/PageContainer/PageContainer";
 import PageHeader from "../../components/PageHeader/PageHeader";
+import ButtonIcon from '../../components/ButtonIcon/ButtonIcon';
+import SupplyRequestModal from "./components/SupplyRequestModal";
+import SupplyRequestsTable from './components/SupplyRequestsTable';
 import Toggle from '../../components/Toggle/Toggle';
-import ButtonIcon from "../../components/ButtonIcon/ButtonIcon";
-import SupplieModal from "./components/SupplieModal";
-import SupplyTable from "./components/SupplyTable";
+import { AuthContext } from '../../utility/contexts';
 
-const SuppliesPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const SupplyRequestPage = () => {
   const [query, setQuery] = useState(false);
   const [currentData, setCurrentData] = useState({});
   const [isNeedUpdate, setIsNeedUpdate] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const currentUser = useContext(AuthContext);
@@ -22,13 +22,13 @@ const SuppliesPage = () => {
     setIsNeedUpdate(false);
     setCurrentData({
       request: request,
-      action: currentUser.user.role === 'Employee' ? 'sign' : action
+      action: currentUser.user.role === 'Supplier' ? 'sign' : action
     });
     setIsModalOpen(true);
   };
 
   const handleCloseModal = (isNeedUpdate) => {
-    navigate('/home/supplies');
+    navigate('/home/supplyrequest');
     setIsNeedUpdate(isNeedUpdate);
     setIsModalOpen(false);
   };
@@ -40,22 +40,24 @@ const SuppliesPage = () => {
   return (
     <PageContainer>
       <PageHeader>
-        <Toggle label={currentUser?.user?.role === 'Supplier' ? 'Approved by employee' : 'Approved'} value={query} onChange={handleQuery} />
+        <Toggle label={currentUser?.user?.role !== 'Supplier' ? 'Approved by supplier' : 'Approved'} value={query} onChange={handleQuery} />
         {
-          currentUser?.user?.role !== 'Employee' &&
+          currentUser?.user?.role !== 'Supplier' &&
           <ButtonIcon type='outline' iconName='PlusIcon' title='Create Product' onClick={() => handleProcessRecord({}, 'new')} />
         }
       </PageHeader>
 
-      <SupplyTable
+      <SupplyRequestsTable
         isNeedUpdate={isNeedUpdate}
-        isApprovedByEmployee={query}
+        isApprovedBySupplier={query}
         onSelect={(request) => handleProcessRecord(request, 'view')}
       />
 
-      {isModalOpen && <SupplieModal onClose={handleCloseModal} data={currentData} />}
+      {
+        isModalOpen && <SupplyRequestModal onClose={handleCloseModal} data={currentData} />
+      }
     </PageContainer>
-  )
+  );
 };
 
-export default SuppliesPage;
+export default SupplyRequestPage;

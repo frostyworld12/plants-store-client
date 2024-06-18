@@ -3,6 +3,7 @@ import Menu from "./components/Menu";
 import UserInfo from "./components/UserInfo";
 import Logout from "./components/Logout";
 
+
 const HomePage = () => {
   return (
     <div className="h-screen box-border">

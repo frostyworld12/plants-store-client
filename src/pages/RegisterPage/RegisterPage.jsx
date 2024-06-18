@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-import { useSupplierUser } from "../../hooks/useUsers";
+import { useRegisterSupplierUser } from "../../hooks/useUsers";
 
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
@@ -11,7 +10,7 @@ const RegisterPage = () => {
     supplierData,
     handleSupplierDataChange,
     handleSaveSupplier
-  } = useSupplierUser();
+  } = useRegisterSupplierUser();
 
   const handleLoginClick = () => {
     navigate('/login/supplier');
@@ -91,7 +90,6 @@ const RegisterPage = () => {
           />
         </div>
       </form>
-      <Toaster />
     </div>
   </div>
 };

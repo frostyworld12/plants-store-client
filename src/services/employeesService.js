@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as constants from '../utility/constants';
+import { getErrorMessage } from "../utility/helper";
 
 export const retrieveEmployees = async (limit, offset, query = '') => {
   try {
@@ -15,7 +16,7 @@ export const retrieveEmployees = async (limit, offset, query = '') => {
       ...result.data
     };
   } catch (error) {
-    throw new Error(error?.response?.data || 'Unknown error');
+    throw new Error(getErrorMessage(error));
   }
 };
 
@@ -24,7 +25,7 @@ export const saveEmployee = async (data) => {
     const result = await axios.post(constants.saveEmployee, data);
     return result;
   } catch (error) {
-    throw new Error(error?.response?.data || 'Unknown error');
+    throw new Error(getErrorMessage(error));
   }
 };
 
@@ -37,7 +38,7 @@ export const deleteEmployee = async (userId) => {
     });
     return result;
   } catch (error) {
-    throw new Error(error?.response?.data || 'Unknown error');
+    throw new Error(getErrorMessage(error));
   }
 };
 
@@ -50,6 +51,6 @@ export const getEmployee = async (employeeId) => {
     });
     return result.data;
   } catch (error) {
-    throw new Error(error?.response?.data || 'Unknown error');
+    throw new Error(getErrorMessage(error));
   }
 }

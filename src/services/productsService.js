@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as constants from '../utility/constants';
+import { getErrorMessage } from "../utility/helper";
 
 export const retrieveProducts = async (limit, offset, query = '') => {
   try {
@@ -15,7 +16,23 @@ export const retrieveProducts = async (limit, offset, query = '') => {
       ...result.data
     };
   } catch (error) {
-    throw new Error(error?.response?.data || 'Unknown error');
+    throw new Error(getErrorMessage(error));
+  }
+};
+
+export const getProductsByIds = async (productIds = []) => {
+  try {
+    if (productIds.length) {
+      const result = await axios.post(constants.getProductsByIds, {
+        productIds: productIds
+      });
+
+      return {
+        ...result.data
+      };
+    }
+  } catch (error) {
+    throw new Error(getErrorMessage(error));
   }
 };
 
@@ -24,7 +41,7 @@ export const saveProduct = async (data) => {
     const result = await axios.post(constants.saveProduct, data);
     return result;
   } catch (error) {
-    throw new Error(error?.response?.data || 'Unknown error');
+    throw new Error(getErrorMessage(error));
   }
 };
 
@@ -37,6 +54,6 @@ export const deleteProduct = async (productId) => {
     });
     return result;
   } catch (error) {
-    throw new Error(error?.response?.data || 'Unknown error');
+    throw new Error(getErrorMessage(error));
   }
 };

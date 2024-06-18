@@ -6,22 +6,24 @@ import Icon from "../../../components/Icon/Icon";
 
 const USER_TYPE_MENU = {
   Supplier: [
-    'Products',
+    'Supply Request',
     'Supplies'
   ],
   Employee: [
     'Products',
+    'Supply Request',
     'Supplies',
-    'Suppliers',
+    'Suppliers'
   ]
 };
 
 const MENU_ITEMS = [
-  { name: 'Products' , iconName: 'CubeIcon'               , isSelected: false, isAllowed: false, link: 'products'  },
-  { name: 'Suppliers', iconName: 'BuildingStorefrontIcon' , isSelected: false, isAllowed: false, link: 'suppliers' },
-  { name: 'Supplies' , iconName: 'ArchiveBoxArrowDownIcon', isSelected: false, isAllowed: false, link: 'supplies'  },
-  { name: 'Inventory', iconName: 'ArchiveBoxIcon'         , isSelected: false, isAllowed: false, link: 'inventory' },
-  { name: 'Employees', iconName: 'UsersIcon'              , isSelected: false, isAllowed: false, link: 'employees' },
+  { name: 'Products'      , iconName: 'CubeIcon'               , isSelected: false, isAllowed: false, link: 'products'      },
+  { name: 'Suppliers'     , iconName: 'BuildingStorefrontIcon' , isSelected: false, isAllowed: false, link: 'suppliers'     },
+  { name: 'Supplies'      , iconName: 'ArchiveBoxArrowDownIcon', isSelected: false, isAllowed: false, link: 'supplies'      },
+  { name: 'Supply Request', iconName: 'DocumentCheckIcon'      , isSelected: false, isAllowed: false, link: 'supplyrequest' },
+  { name: 'Inventory'     , iconName: 'ArchiveBoxIcon'         , isSelected: false, isAllowed: false, link: 'inventory'     },
+  { name: 'Employees'     , iconName: 'UsersIcon'              , isSelected: false, isAllowed: false, link: 'employees'     },
 ];
 
 const Menu = () => {
@@ -48,10 +50,7 @@ const Menu = () => {
 
   useEffect(() => {
     const userData = getUserData() || {};
-    console.log('userData', userData);
     const allowedMenu = MENU_ITEMS.map(item => ({...item, isAllowed: USER_TYPE_MENU[userData.user?.role]?.includes(item.name)}));
-    console.log('allowedMenu', allowedMenu);
-
     const currentItem = allowedMenu.find(item => item.link === getCurrentPath());
     setMenuItems(setUpSelectedItem(currentItem, allowedMenu));
   }, [location]);

@@ -13,11 +13,25 @@ export const getSupplier = api + 'suppliers/getSupplier';
 export const createSupplierUser = api + 'users/createSupplierUser';
 
 export const getUser = api + 'users/getUser';
-
-export const getCustomers = api + 'customers/getCustomers';
-export const saveCustomer = api + 'customers/saveCustomer';
-export const deleteCustomer = api + 'customers/deleteCustomer';
+export const getUserById = api + 'users/getUserById';
 
 export const getProducts = api + 'products/getProducts';
 export const saveProduct = api + 'products/saveProduct';
 export const deleteProduct = api + 'products/deleteProduct';
+export const getProductsByIds = api + 'products/getProductsByIds';
+
+export const saveSupplyRequest = api + 'supplyrequest/saveSupplyRequest';
+export const saveSupplierRequest = api + 'supplyrequest/saveSupplierSupplyRequest';
+export const getSupplyRequests = api + 'supplyrequest/getSupplyRequests';
+export const getSupplyRequestById = api + 'supplyrequest/getRequestById';
+export const signSupplyRequest = api + 'supplyrequest/signSupplyRequest';
+export const getSupplyRequestsForSupplier = api + 'supplyrequest/getSupplyRequestsForSupplier'
+
+export const getNotifications = api + 'notifications/getNotifications';
+export const readNotification = api + 'notifications/readNotification';
+
+export const fetchRoutes = {
+  suppliers: getSuppliers,
+  products: getProducts,
+  requests: getSupplyRequestsForSupplier
+};
